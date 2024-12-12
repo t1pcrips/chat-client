@@ -27,3 +27,43 @@ vendor-proto:
 			mv vendor.protogen/googleapis/google/api vendor.protogen/google &&\
 			rm -rf vendor.protogen/googleapis ;\
 		fi
+
+
+generation-protoc-chat:
+	mkdir -p $(CURDIR)/pkg/chat_v1
+	protoc --proto_path grpc/chat_v1 --proto_path vendor.protogen \
+            --go_out=pkg/chat_v1 --go_opt=paths=source_relative \
+            --plugin=protoc-gen-go=bin/protoc-gen-go \
+            --go-grpc_out=pkg/chat_v1 --go-grpc_opt=paths=source_relative \
+            --plugin=protoc-gen-go-grpc=bin/protoc-gen-go-grpc \
+            --grpc-gateway_out=pkg/chat_v1 --grpc-gateway_opt=paths=source_relative \
+            --plugin=protoc-gen-grpc-gateway=bin/protoc-gen-grpc-gateway \
+            --validate_out=lang=go:pkg/chat_v1 --validate_opt=paths=source_relative \
+            --plugin=protoc-gen-validate=bin/protoc-gen-validate \
+            grpc/chat_v1/chat.proto
+
+generation-protoc-user:
+	mkdir -p pkg/user_v1
+	protoc --proto_path grpc/user_v1  --proto_path vendor.protogen \
+            --go_out=pkg/user_v1 --go_opt=paths=source_relative \
+            --plugin=protoc-gen-go=bin/protoc-gen-go \
+            --go-grpc_out=pkg/user_v1 --go-grpc_opt=paths=source_relative \
+            --plugin=protoc-gen-go-grpc=bin/protoc-gen-go-grpc \
+            --validate_out=lang=go:pkg/user_v1 --validate_opt=paths=source_relative \
+            --plugin=protoc-gen-validate=bin/protoc-gen-validate \
+            --grpc-gateway_out=pkg/user_v1 --grpc-gateway_opt=paths=source_relative \
+            --plugin=protoc-gen-grpc-gateway=bin/protoc-gen-grpc-gateway \
+            grpc/user_v1/user.proto
+
+generation-protoc-auth:
+	mkdir -p pkg/auth_v1
+	protoc --proto_path grpc/auth_v1  --proto_path vendor.protogen \
+            --go_out=pkg/auth_v1 --go_opt=paths=source_relative \
+            --plugin=protoc-gen-go=bin/protoc-gen-go \
+            --go-grpc_out=pkg/auth_v1 --go-grpc_opt=paths=source_relative \
+            --plugin=protoc-gen-go-grpc=bin/protoc-gen-go-grpc \
+            --validate_out=lang=go:pkg/auth_v1 --validate_opt=paths=source_relative \
+            --plugin=protoc-gen-validate=bin/protoc-gen-validate \
+            --grpc-gateway_out=pkg/auth_v1 --grpc-gateway_opt=paths=source_relative \
+            --plugin=protoc-gen-grpc-gateway=bin/protoc-gen-grpc-gateway \
+			grpc/auth_v1/auth.proto
