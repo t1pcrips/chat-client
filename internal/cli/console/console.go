@@ -10,6 +10,10 @@ import (
 	"time"
 )
 
+const (
+	format = "2006-01-02 15:04:05"
+)
+
 type Writer struct {
 	mx      sync.Mutex
 	scanner *bufio.Scanner
@@ -23,18 +27,22 @@ func NewConsoleWriter() *Writer {
 }
 
 func (c *Writer) Info(text string) {
-	printMsg := color.RedString(fmt.Sprintf("[%v] INFO - %s", time.Now(), text))
+	printMsg := color.YellowString(fmt.Sprintf("[%v]", time.Now().Format(format)))
+	printMsg += color.GreenString(" INFO -")
+	printMsg += text
 	fmt.Println(printMsg)
 }
 
 func (c *Writer) Error(text string) {
-	printMsg := color.RedString(fmt.Sprintf("[%v] ERROR - ", time.Now()))
+	printMsg := color.YellowString(fmt.Sprintf("[%v]", time.Now().Format(format)))
+	printMsg += color.RedString("ERROR - ")
 	printMsg += text
 	fmt.Println(printMsg)
 }
 
 func (c *Writer) Message(msgDateTime time.Time, userName string, msg string) {
-	printMsg := color.CyanString(fmt.Sprintf("[%v] FROM: %s", msgDateTime, userName))
+	printMsg := color.YellowString(fmt.Sprintf("[%v]", time.Now().Format(format)))
+	printMsg += color.CyanString(fmt.Sprintf("FROM: %s", userName))
 	printMsg += msg
 	fmt.Println(printMsg)
 }

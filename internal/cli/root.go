@@ -1,9 +1,9 @@
 package cli
 
 import (
+	"context"
 	"github.com/spf13/cobra"
 	"github.com/t1pcrips/chat-client/internal/service"
-	"log"
 )
 
 const (
@@ -32,7 +32,6 @@ type Chat struct {
 
 	rootCommand       *cobra.Command
 	createCommand     *cobra.Command
-	chatCommand       *cobra.Command
 	loginCommand      *cobra.Command
 	connectCommand    *cobra.Command
 	createUserCommand *cobra.Command
@@ -46,10 +45,20 @@ type Chat struct {
 // chat-project connect -u qwe -c 1
 
 func NewChat(chatService service.ChatService, writer ConsoleWriter) *Chat {
-	return &Chat{
-		chatService: chatService,
-		writer:      writer,
+	newChat := &Chat{chatService: chatService, writer: writer}
+	newChat.initCommands()
+	newChat.commands()
+
+	return newChat
+}
+
+func (c *Chat) Execute(ctx context.Context) error {
+	err := c.rootCommand.ExecuteContext(ctx)
+	if err != nil {
+		return err
 	}
+
+	return nil
 }
 
 func (c *Chat) createRootCommand() *cobra.Command {
@@ -66,9 +75,18 @@ func (c *Chat) createCreateCommand() *cobra.Command {
 	}
 }
 
+func (c *Chat) initCommands() {
+	c.rootCommand = c.createRootCommand()
+	c.createCommand = c.createCreateCommand()
+	c.createUserCommand = c.createCreateUserCommand()
+	c.createChatCommand = c.createCreateChatCommand()
+	c.loginCommand = c.createLogin()
+	c.connectCommand = c.createConnectCommand()
+}
+
 func (c *Chat) commands() {
 	c.rootCommand.AddCommand(c.createCommand)
-	c.rootCommand.AddCommand(c.chatCommand)
+	c.rootCommand.AddCommand(c.loginCommand)
 	c.rootCommand.AddCommand(c.connectCommand)
 
 	c.createCommand.AddCommand(c.createUserCommand)
@@ -77,16 +95,18 @@ func (c *Chat) commands() {
 	c.createUserCommand.Flags().StringP(username, "u", "", "name of user")
 	c.createUserCommand.Flags().StringP(email, "e", "", "email of user")
 	c.createUserCommand.Flags().StringP(password, "p", "", "password of user")
-	c.createUserCommand.Flags().StringP(passwordConfirm, "pc", "", "passwords confirm for user")
+	c.createUserCommand.Flags().StringP(passwordConfirm, "c", "", "passwords confirm for user")
+	c.createUserCommand.Flags().Int64P(role, "r", 1, "role of user")
 	c.createUserCommand.MarkFlagsRequiredTogether(username, email, password, passwordConfirm)
+
+	c.createChatCommand.Flags().StringP(email, "e", "", "email of user")
+	c.createChatCommand.MarkFlagsRequiredTogether(email)
 
 	c.loginCommand.Flags().StringP(email, "e", "", "email of user")
 	c.loginCommand.Flags().StringP(password, "p", "", "password of user")
-	c.loginCommand.MarkFlagsRequiredTogether(username, email)
+	c.loginCommand.MarkFlagsRequiredTogether(email, password)
 
 	c.connectCommand.Flags().Int64P(chatId, "c", 0, "chat id for connecting")
-	err := c.connectCommand.MarkFlagRequired(chatId)
-	if err != nil {
-		log.Println(err.Error())
-	}
+	c.connectCommand.Flags().StringP(email, "e", "", "email for connecting")
+	c.connectCommand.MarkFlagsRequiredTogether(chatId, email)
 }

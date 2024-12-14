@@ -1,24 +1,21 @@
 package main
 
 import (
-	"fmt"
-	"time"
+	"context"
+	"github.com/t1pcrips/chat-client/internal/app"
+	"log"
 )
 
 func main() {
-	// Выводим несколько строк
-	fmt.Println("Строка 1")
-	fmt.Println("Строка 2")
-	fmt.Println("Строка 3")
+	ctx := context.Background()
 
-	// Ждем 2 секунды
-	time.Sleep(2 * time.Second)
+	a, err := app.NewApp(ctx, "local.env")
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
 
-	// Удаляем последнюю строку
-	fmt.Printf("\033[1A\033[K")
-	fmt.Printf("\033[1A\033[K")
-	fmt.Printf("\033[1A\033[K")
-
-	// Выводим новую строку вместо удаленной
-	fmt.Println("Новая строка")
+	err = a.Run(ctx)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
 }

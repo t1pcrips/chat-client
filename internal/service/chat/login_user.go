@@ -14,5 +14,5 @@ func (s *ChatServiceImpl) LoginUser(ctx context.Context, email string, password 
 		return err
 	}
 
-	return s.tokensRepository.SaveToken(ctx, tokens)
+	return s.tokensRepository.SaveToken(ctx, tokens, email)
 }

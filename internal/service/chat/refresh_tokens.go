@@ -8,7 +8,7 @@ func (s *ChatServiceImpl) RefreshTokens(ctx context.Context, token string) error
 		return err
 	}
 
-	err = s.tokensRepository.SaveToken(ctx, tokens)
+	err = s.tokensRepository.SaveToken(ctx, tokens, "")
 	if err != nil {
 		return err
 	}

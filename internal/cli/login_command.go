@@ -5,7 +5,7 @@ import (
 	"log"
 )
 
-func (c *Chat) Login() *cobra.Command {
+func (c *Chat) createLogin() *cobra.Command {
 	return &cobra.Command{
 		Use:   login,
 		Short: loginDesc,

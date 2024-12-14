@@ -14,6 +14,6 @@ type UserClaims struct {
 	id       int64
 	Username string
 	Email    string
-	Role     int64
+	Role     string
 	jwt.Claims
 }

@@ -7,8 +7,8 @@ import (
 	"github.com/t1pcrips/chat-client/internal/service/utils"
 )
 
-func (s *ChatServiceImpl) ConnectChat(ctx context.Context, chatId int64) (service.ServerStreamingClient, error) {
-	tokens, user, err := s.getTokesnAndUser(ctx)
+func (s *ChatServiceImpl) ConnectChat(ctx context.Context, chatId int64, email string) (service.ServerStreamingClient, error) {
+	tokens, user, err := s.getTokesnAndUser(ctx, email)
 	if err != nil {
 		return nil, err
 	}
