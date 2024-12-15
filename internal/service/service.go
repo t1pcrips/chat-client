@@ -10,8 +10,8 @@ type ChatService interface {
 	CreateUser(ctx context.Context, info *model.CreateUser) error
 	LoginUser(ctx context.Context, email string, password string) error
 	RefreshTokens(ctx context.Context, token string) error
-	CreateChat(ctx context.Context, email string) (int64, error)
-	ConnectChat(ctx context.Context, chatId int64, email string) (ServerStreamingClient, error)
+	CreateChat(ctx context.Context) (int64, error)
+	ConnectChat(ctx context.Context, chatId int64) (ServerStreamingClient, error)
 	SendMessage(ctx context.Context, chatId int64, text string, timeSend time.Time) error
 }
 

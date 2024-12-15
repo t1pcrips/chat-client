@@ -11,13 +11,7 @@ func (c *Chat) createCreateChatCommand() *cobra.Command {
 		Use:   chat,
 		Short: chatDesc,
 		Run: func(cmd *cobra.Command, args []string) {
-			email, err := cmd.Flags().GetString("email")
-			if err != nil {
-				log.Println(err.Error())
-				return
-			}
-
-			chatId, err := c.chatService.CreateChat(cmd.Context(), email)
+			chatId, err := c.chatService.CreateChat(cmd.Context())
 			if err != nil {
 				log.Println(err.Error())
 				return

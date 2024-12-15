@@ -8,13 +8,13 @@ import (
 	"os"
 )
 
-func (repo *TokensRepositoryImpl) SaveToken(ctx context.Context, tokens *model.Tokens, email string) error {
+func (repo *TokensRepositoryImpl) SaveToken(ctx context.Context, tokens *model.Tokens) error {
 	repoTokens := &model_tokens.Tokens{
 		AccessToken:  tokens.AccessToken,
 		RefreshToken: tokens.RefreshToken,
 	}
 
-	file, err := os.OpenFile(repo.pathsConfig.FileTokensSave+email+".json", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+	file, err := os.OpenFile(repo.pathsConfig.FileTokensSave, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
 		return err
 	}

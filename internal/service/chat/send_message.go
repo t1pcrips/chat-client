@@ -8,7 +8,7 @@ import (
 )
 
 func (s *ChatServiceImpl) SendMessage(ctx context.Context, chatId int64, text string, timeSend time.Time) error {
-	tokens, claims, err := s.getTokesnAndUser(ctx, "")
+	tokens, claims, err := s.getTokesnAndUser(ctx)
 	if err != nil {
 		return err
 	}

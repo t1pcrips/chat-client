@@ -5,8 +5,8 @@ import (
 	"github.com/t1pcrips/chat-client/internal/service/utils"
 )
 
-func (s *ChatServiceImpl) CreateChat(ctx context.Context, email string) (int64, error) {
-	tokens, user, err := s.getTokesnAndUser(ctx, email)
+func (s *ChatServiceImpl) CreateChat(ctx context.Context) (int64, error) {
+	tokens, user, err := s.getTokesnAndUser(ctx)
 	if err != nil {
 		return 0, err
 	}

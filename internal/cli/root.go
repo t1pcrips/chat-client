@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/spf13/cobra"
 	"github.com/t1pcrips/chat-client/internal/service"
+	"log"
 )
 
 const (
@@ -99,14 +100,13 @@ func (c *Chat) commands() {
 	c.createUserCommand.Flags().Int64P(role, "r", 1, "role of user")
 	c.createUserCommand.MarkFlagsRequiredTogether(username, email, password, passwordConfirm)
 
-	c.createChatCommand.Flags().StringP(email, "e", "", "email of user")
-	c.createChatCommand.MarkFlagsRequiredTogether(email)
-
 	c.loginCommand.Flags().StringP(email, "e", "", "email of user")
 	c.loginCommand.Flags().StringP(password, "p", "", "password of user")
 	c.loginCommand.MarkFlagsRequiredTogether(email, password)
 
 	c.connectCommand.Flags().Int64P(chatId, "c", 0, "chat id for connecting")
-	c.connectCommand.Flags().StringP(email, "e", "", "email for connecting")
-	c.connectCommand.MarkFlagsRequiredTogether(chatId, email)
+	err := c.connectCommand.MarkFlagRequired(chatId)
+	if err != nil {
+		log.Println(err.Error())
+	}
 }

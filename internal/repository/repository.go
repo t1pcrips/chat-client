@@ -6,6 +6,6 @@ import (
 )
 
 type TokensRepository interface {
-	SaveToken(ctx context.Context, tokens *model.Tokens, email string) error
-	GetToken(ctx context.Context, email string) (*model.Tokens, error)
+	SaveToken(ctx context.Context, tokens *model.Tokens) error
+	GetToken(ctx context.Context) (*model.Tokens, error)
 }

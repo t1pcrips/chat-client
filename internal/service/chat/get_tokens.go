@@ -7,8 +7,8 @@ import (
 	"github.com/t1pcrips/chat-client/internal/model"
 )
 
-func (s *ChatServiceImpl) getTokesnAndUser(ctx context.Context, email string) (*model.Tokens, *model.UserClaims, error) {
-	tokens, err := s.tokensRepository.GetToken(ctx, email)
+func (s *ChatServiceImpl) getTokesnAndUser(ctx context.Context) (*model.Tokens, *model.UserClaims, error) {
+	tokens, err := s.tokensRepository.GetToken(ctx)
 	if err != nil {
 		return nil, nil, err
 	}

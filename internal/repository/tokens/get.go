@@ -8,10 +8,10 @@ import (
 	"os"
 )
 
-func (repo *TokensRepositoryImpl) GetToken(ctx context.Context, email string) (*model.Tokens, error) {
+func (repo *TokensRepositoryImpl) GetToken(ctx context.Context) (*model.Tokens, error) {
 	repoTokens := &model_tokens.Tokens{}
 
-	file, err := os.OpenFile(repo.pathsConfig.FileTokensSave+email+".json", os.O_RDONLY, 1111)
+	file, err := os.OpenFile(repo.pathsConfig.FileTokensSave, os.O_RDONLY, 1111)
 	if err != nil {
 		return nil, err
 	}
